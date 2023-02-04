@@ -10,22 +10,30 @@ export class EventoDetalheComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor() { }
+  get f(): any {
+    return this.form.controls;
+  }
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.validation();
   }
 
   public validation(): void {
-    this.form = new FormGroup({
-      tema: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]  ),
-      local: new FormControl('', Validators.required),
-      dataEvento: new FormControl('', Validators.required,  ),
-      qtdPessoas: new FormControl('', [Validators.required, Validators.max(120000)]),
-      imagemURL: new FormControl('', Validators.required,  ),
-      telefone: new FormControl('', Validators.required,  ),
-      email: new FormControl('', [Validators.required, Validators.email] )
+    this.form = this.fb.group({
+      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      local: ['', Validators.required],
+      dataEvento: ['', Validators.required],
+      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+      imagemURL: ['', Validators.required],
+      telefone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
     });
+  }
+
+  public resetForm() : void{
+    this.form.reset();
   }
 
 }
