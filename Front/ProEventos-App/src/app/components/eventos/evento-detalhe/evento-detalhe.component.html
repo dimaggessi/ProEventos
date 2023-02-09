@@ -1,7 +1,7 @@
 <div class="card rounded shadow-sm p-3">
  <form [formGroup]="form">
-  <!-- <p>Form value: {{form.value | json}}</p>
-  <p>Form valid: {{form.valid | json}}</p> -->
+  <p>Form value: {{form.value | json}}</p>
+  <p>Form valid: {{form.valid | json}}</p>
   <div>
     <div class="form-row">
       <div class="form-group col-md-12">
@@ -32,6 +32,7 @@
         <label>Data e Hora</label>
         <input type="datetime" class="form-control"
         [ngClass]="cssValidator(f.dataEvento)"
+        value="{{evento.dataEvento | DateFormatPipe}}"
         bsDatepicker
         [bsConfig]="bsConfig"
         formControlName="dataEvento" placeholder="">

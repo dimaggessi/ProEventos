@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { EventoService } from '@app/services/evento.service';
+import { Evento } from '@app/models/Evento';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { DateTimeFormatPipe } from '@app/helpers/DateTimeFormat.pipe';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -9,6 +13,7 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 })
 export class EventoDetalheComponent implements OnInit {
 
+  evento = {} as Evento;
   form!: FormGroup;
 
   get f(): any {
@@ -19,21 +24,39 @@ export class EventoDetalheComponent implements OnInit {
     return {
       isAnimated: true,
       adaptivePosition: true,
-      dateInputFormat: 'DD/MM/YYYY - hh:mm a',
+      dateInputFormat: 'dd/MM/YYYY hh:mm a',
       containerClass: 'theme-blue',
       showWeekNumbers: false
     };
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private localeService: BsLocaleService
-    )
-    {
-      this.localeService.use('pt-br');
+  constructor(private fb: FormBuilder,
+              private localeService: BsLocaleService,
+              private router: ActivatedRoute,
+              private eventoService : EventoService)
+  {
+    this.localeService.use('pt-br');
+  }
+
+  public carregarEvento() : void {
+    const eventoIdParam = this.router.snapshot.paramMap.get('id');
+
+    if (eventoIdParam !== null) {
+      this.eventoService.getEventoById(+eventoIdParam).subscribe(
+        (evento: Evento) => {
+          this.evento = {...evento}
+          this.form.patchValue(this.evento);
+        },
+        (error: any) => {
+          console.log(error)
+        },
+        () => {},
+      );
     }
+  }
 
   ngOnInit(): void {
+    this.carregarEvento();
     this.validation();
   }
 
@@ -56,5 +79,4 @@ export class EventoDetalheComponent implements OnInit {
   public cssValidator(campoForm: FormControl) : any {
     return {'is-invalid': campoForm.errors && campoForm.touched}
   }
-
 }
