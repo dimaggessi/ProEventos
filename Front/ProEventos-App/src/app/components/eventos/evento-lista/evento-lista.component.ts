@@ -70,7 +70,7 @@ export class EventoListaComponent implements OnInit {
 
   confirm(): void {
     this.modalRef?.hide();
-    this.eventoService.deleteEvento(this.eventoId).subscribe(
+    this.eventoService.delete(this.eventoId).subscribe(
       (result: string) => {
         this.getEventos();
       }, //next

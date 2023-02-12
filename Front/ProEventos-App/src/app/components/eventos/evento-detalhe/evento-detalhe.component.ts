@@ -6,6 +6,7 @@ import { Evento } from '@app/models/Evento';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { DateTimeFormatPipe } from '@app/helpers/DateTimeFormat.pipe';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -17,7 +18,7 @@ export class EventoDetalheComponent implements OnInit {
   modalRef?: BsModalRef;
   evento = {} as Evento;
   form!: FormGroup;
-  estadoSalvarAtualizar = 'post';
+  estadoSalvarAtualizar: string = 'post';
 
   get f(): any {
     return this.form.controls;
@@ -100,36 +101,22 @@ export class EventoDetalheComponent implements OnInit {
   public salvarEvento(): void {
     if (this.form.valid) {
 
-      if (this.estadoSalvarAtualizar == 'post') {
+      let service = {} as Observable<Evento>;
 
-        this.evento = {...this.form.value}
+      this.evento = (this.estadoSalvarAtualizar == 'post')
+                ? {...this.form.value}
+                : {id: this.evento.id, ...this.form.value}
 
-        this.eventoService.postEvento(this.evento).subscribe(
-          // next;
-          // error;
-          // complete;
-          () => { console.log('Evento salvo.') },
-          (error: any) => {
-            console.error(error);
-          },
-          () => {}
-        );
-
-      } else {
-
-        this.evento = {id: this.evento.id, ...this.form.value}
-
-        this.eventoService.putEvento(this.evento.id, this.evento).subscribe(
-          // next;
-          // error;
-          // complete;
-          () => { console.log('Evento salvo.') },
-          (error: any) => {
-            console.error(error);
-          },
-          () => {}
-        );
-      }
+      this.eventoService[this.estadoSalvarAtualizar](this.evento).subscribe(
+        // next;
+        // error;
+        // complete;
+        () => { console.log('Evento salvo.') },
+        (error: any) => {
+          console.error(error);
+        },
+        () => {}
+      );
     }
   }
 }
