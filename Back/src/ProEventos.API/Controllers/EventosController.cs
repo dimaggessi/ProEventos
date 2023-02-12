@@ -113,9 +113,9 @@ namespace ProEventos.API.Controllers
                 var eventos = await _eventoService.GetEventoByIdAsync(id, true);
                 if (eventos == null) return NoContent();
 
-                return await _eventoService.DeleteEvento(id) ?
-                Ok("Evento excluído") :
-                throw new Exception("Ocorreu um problema ao tentar excluir o evento");
+                return await _eventoService.DeleteEvento(id) 
+                        ? Ok(new {message = "Evento excluído"})
+                        : throw new Exception("Ocorreu um problema ao tentar excluir o evento");
             }
             catch (Exception ex)
             {

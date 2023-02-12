@@ -16,6 +16,7 @@ export class EventoListaComponent implements OnInit {
   public eventosFiltrados: Evento[] = [];
   public widthImg: number = 150;
   public marginImg: number = 2;
+  public eventoId: number = 0;
 
   public isCollapsed: boolean = false;
   private _filtroLista: string = "";
@@ -61,12 +62,23 @@ export class EventoListaComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(event: any, template: TemplateRef<any>, eventoId: number) {
+    event.stopPropagation();
+    this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
   confirm(): void {
     this.modalRef?.hide();
+    this.eventoService.deleteEvento(this.eventoId).subscribe(
+      (result: string) => {
+        this.getEventos();
+      }, //next
+      (error: any) => {
+        console.error(error);
+      }, //error
+      () => {}  //complete
+    );
   }
 
   decline(): void {

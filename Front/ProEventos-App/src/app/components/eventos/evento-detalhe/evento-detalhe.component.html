@@ -87,11 +87,17 @@
       <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
         Cancelar Alteração
       </button>
-      <button class="btn btn-success" [disabled]="!form.valid">
+      <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarEvento(); openModal($event, templateSalvo)">
         Salvar Evento
       </button>
     </div>
   </div>
 </form>
-
 </div>
+
+<ng-template #templateSalvo>
+  <div class="modal-body text-center">
+    <p>Evento Salvo!</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Ok</button>
+  </div>
+</ng-template>
