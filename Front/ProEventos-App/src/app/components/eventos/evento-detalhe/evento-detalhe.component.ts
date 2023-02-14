@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventoService } from '@app/services/evento.service';
 import { Evento } from '@app/models/Evento';
@@ -7,6 +7,7 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { DateTimeFormatPipe } from '@app/helpers/DateTimeFormat.pipe';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { Lote } from '@app/models/Lote';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -19,6 +20,11 @@ export class EventoDetalheComponent implements OnInit {
   evento = {} as Evento;
   form!: FormGroup;
   estadoSalvarAtualizar: string = 'post';
+
+  get lotes(): FormArray {
+    return this.form.get('lotes') as FormArray;
+  }
+
 
   get f(): any {
     return this.form.controls;
@@ -76,7 +82,23 @@ export class EventoDetalheComponent implements OnInit {
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
       imagemURL: ['', Validators.required],
       telefone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      lotes: this.fb.array([])
+    });
+  }
+
+  adicionarLote(): void {
+    this.lotes.push(this.criarLote({id: 0} as Lote));
+  }
+
+  criarLote(lote: Lote): FormGroup {
+    return this.fb.group({
+      id: [lote.id],
+      nome: [lote.nome, Validators.required],
+      preco: [lote.preco, Validators.required],
+      dataInicio: [lote.dataInicio],
+      dataFim: [lote.dataFim],
+      quantidade: [lote.quantidade, Validators.required]
     });
   }
 
@@ -86,7 +108,7 @@ export class EventoDetalheComponent implements OnInit {
 
   openModal(event: any, template: TemplateRef<any>) {
     event.stopPropagation();
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
   confirm(): void {
@@ -104,8 +126,8 @@ export class EventoDetalheComponent implements OnInit {
       let service = {} as Observable<Evento>;
 
       this.evento = (this.estadoSalvarAtualizar == 'post')
-                ? {...this.form.value}
-                : {id: this.evento.id, ...this.form.value}
+        ? { ...this.form.value }
+        : { id: this.evento.id, ...this.form.value }
 
       this.eventoService[this.estadoSalvarAtualizar](this.evento).subscribe(
         // next;
@@ -115,7 +137,7 @@ export class EventoDetalheComponent implements OnInit {
         (error: any) => {
           console.error(error);
         },
-        () => {}
+        () => { }
       );
     }
   }

@@ -13,12 +13,14 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 
+import { EventoService } from './services/evento.service';
+import { LoteService } from './services/lote.service';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventosComponent } from './components/eventos/eventos.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
-import { EventoService } from './services/evento.service';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -63,7 +65,10 @@ defineLocale('pt-br', ptBrLocale);
     FormsModule,
     BsDatepickerModule.forRoot()
   ],
-  providers: [EventoService],
+  providers: [
+    EventoService,
+    LoteService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
