@@ -1,7 +1,7 @@
 <div class="card rounded shadow-sm p-3">
  <form [formGroup]="form">
-  <p>Form value: {{form.value | json}}</p>
-  <p>Form valid: {{form.valid | json}}</p>
+  <!-- <p>Form value: {{form.value | json}}</p>
+  <p>Form valid: {{form.valid | json}}</p> -->
   <div>
     <div class="d-flex">
       <h2 class="mr-auto">
@@ -34,9 +34,9 @@
       <div class="form-group col-md-8">
         <label>Local</label>
         <input type="text" class="form-control"
-         [ngClass]="cssValidator(f.local)"
-         formControlName="local"
-         placeholder="">
+          [ngClass]="cssValidator(f.local)"
+          formControlName="local"
+          placeholder="">
         <div *ngIf="f.local.errors?.required" class="invalid-feedback">
           local é obrigatório
         </div>
@@ -44,13 +44,13 @@
       <div class="form-group col-md-4">
         <label>Data e Hora</label>
         <input type="datetime" class="form-control"
-        [ngClass]="cssValidator(f.dataEvento)"
-        value="{{evento.dataEvento | DateFormatPipe}}"
-        bsDatepicker
-        [bsConfig]="bsConfig"
-        formControlName="dataEvento"
-        placeholder=""
-        [(ngModel)]="evento.dataEvento">
+          [ngClass]="cssValidator(f.dataEvento)"
+          value="{{evento.dataEvento | DateFormatPipe}}"
+          bsDatepicker
+          [bsConfig]="bsConfig"
+          formControlName="dataEvento"
+          placeholder=""
+          [(ngModel)]="evento.dataEvento">
         <div *ngIf="f.dataEvento.errors?.required" class="invalid-feedback">
           informe data e hora
         </div>
@@ -60,9 +60,9 @@
       <div class="form-group col-md-2">
         <label>Qtd. Pessoas</label>
         <input type="number" class="form-control"
-         [ngClass]="cssValidator(f.qtdPessoas)"
-         formControlName="qtdPessoas"
-         placeholder="">
+          [ngClass]="cssValidator(f.qtdPessoas)"
+          formControlName="qtdPessoas"
+          placeholder="">
         <div *ngIf="f.qtdPessoas.errors?.required" class="invalid-feedback">
           campo obrigatório
         </div>
@@ -73,9 +73,9 @@
       <div class="form-group col-md-2">
         <label>Telefone</label>
         <input type="text" class="form-control"
-         [ngClass]="cssValidator(f.telefone)"
-         formControlName="telefone"
-         placeholder="(000) 90000-0000">
+          [ngClass]="cssValidator(f.telefone)"
+          formControlName="telefone"
+          placeholder="(000) 90000-0000">
         <div *ngIf="f.telefone.errors?.required" class="invalid-feedback">
           telefone é obrigatório
         </div>
@@ -83,9 +83,9 @@
       <div class="form-group col-md-4">
         <label>Email</label>
         <input type="text" class="form-control"
-        [ngClass]="cssValidator(f.email)"
-        formControlName="email"
-        placeholder="e-mail">
+          [ngClass]="cssValidator(f.email)"
+          formControlName="email"
+          placeholder="e-mail">
         <div *ngIf="f.email.errors?.required" class="invalid-feedback">
           email é obrigatório
         </div>
@@ -96,9 +96,9 @@
       <div class="form-group col-md-4">
         <label>Imagem</label>
         <input type="text" class="form-control"
-         [ngClass]="cssValidator(f.imagemURL)"
-         formControlName="imagemURL"
-         placeholder="imagem">
+          [ngClass]="cssValidator(f.imagemURL)"
+          formControlName="imagemURL"
+          placeholder="imagem">
         <div *ngIf="f.imagemURL.errors?.required" class="invalid-feedback">
           a imagem é obrigatória
         </div>
@@ -126,8 +126,8 @@
 </ng-template>
 
 <div class="card rounded shadow-sm mt-4 p-3" *ngIf="modoEditar">
-  <p>Form value: {{form.controls.lotes.value | json}}</p>
-  <p>Form valid: {{form.controls.lotes.status | json}}</p>
+  <!-- <p>Form value: {{form.controls.lotes.value | json}}</p>
+  <p>Form valid: {{form.controls.lotes.status | json}}</p> -->
   <div>
     <div class="d-flex">
       <h2 class="mr-auto">
@@ -141,36 +141,39 @@
       <div [formGroup]="form" class="col">
         <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i = index">
           <fieldset [formGroupName]="i" class="form-group">
-            <legend class="d-flex mb-2 justify-content-between capitalize">
-            </legend>
+            <legend class="d-flex justify-content-between capitalize">
+              {{ retornaTituloLote(lotes.get(i+'.nome').value) }}
             <button class="btn btn-sm btn-outline-warning mb-1 border" (click)="removerLote(templateLote, i)">
               <i class="fa fa-window-close my-1"></i>
               <b class="ml-1">Excluir</b>
             </button>
+          </legend>
             <div class="row mt-2">
               <div class="form-group col-md-4">
                 <label>Nome</label>
                 <input
-                [ngClass]="cssValidator(lotes.get(i+'.nome'))"
-                type="text" class="form-control"
-                formControlName="nome"
-                placeholder="Lote">
+                  [ngClass]="cssValidator(lotes.get(i+'.nome'))"
+                  type="text" class="form-control"
+                  formControlName="nome"
+                  placeholder="Lote">
               </div>
               <div class="form-group col-md-4">
                 <label>Quantidade</label>
                 <input
-                [ngClass]="cssValidator(lotes.get(i+'.quantidade'))"
-                type="text" class="form-control"
-                formControlName="quantidade"
-                placeholder="000">
+                  [ngClass]="cssValidator(lotes.get(i+'.quantidade'))"
+                  type="text" class="form-control"
+                  formControlName="quantidade"
+                  placeholder="000">
               </div>
               <div class="form-group col-md-4">
                 <label>Preço</label>
                 <input
-                [ngClass]="cssValidator(lotes.get(i+'.preco'))"
-                type="text" currencyMask class="form-control"
-                formControlName="preco"
-                placeholder="R$ 0,00">
+                  type="text" currencyMask class="form-control"
+                  [ngClass]="cssValidator(lotes.get(i+'.preco'))"
+                  currencyMask
+                  [options]="{ prefix: 'R$', thousands: '.', decimal: ',', align: 'left'}"
+                  formControlName="preco"
+                  placeholder="R$ 0,00">
               </div>
               <div class="form-group col-md-4">
                 <label>Data Início</label>
@@ -200,7 +203,7 @@
       </button>
     </div>
   </div>
-  <div class="card-footer mt-4">
+  <div class="card-footer mt-2">
     <div class="d-flex">
       <button class="btn btn-outline-secondary mr-auto border">
         Cancelar

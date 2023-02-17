@@ -122,6 +122,12 @@ export class EventoDetalheComponent implements OnInit {
     this.lotes.value[indice][campo] = value;
   }
 
+  public retornaTituloLote(nome: string): string {
+    return nome === null || nome === ''
+                ? 'Nome do lote'
+                : nome;
+  }
+
   public resetForm(): void {
     this.form.reset();
   }
