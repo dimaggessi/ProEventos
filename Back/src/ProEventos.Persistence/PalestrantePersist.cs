@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
+using ProEventos.Domain.Identity;
 using ProEventos.Persistence.Contexto;
 using ProEventos.Persistence.Contratos;
 
@@ -47,7 +48,7 @@ namespace ProEventos.Persistence
             query = query
                 .AsNoTracking()
                 .OrderBy(p => p.Id)
-                .Where(p => p.Nome.ToLower()
+                .Where(p => p.User.PrimeiroNome.ToLower()
                 .Contains(nome.ToLower()));
 
             return await query.ToArrayAsync();
