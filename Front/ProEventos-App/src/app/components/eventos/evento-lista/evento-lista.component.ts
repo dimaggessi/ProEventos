@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -60,6 +61,12 @@ export class EventoListaComponent implements OnInit {
 
   public change() : void {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  public mostraImagem(imagemURL: string): string {
+    return (imagemURL !== '')
+    ? `${environment.apiURL}resources/images/${imagemURL}`
+    : 'assets/semImg.jpg';
   }
 
   openModal(event: any, template: TemplateRef<any>, eventoId: number) {

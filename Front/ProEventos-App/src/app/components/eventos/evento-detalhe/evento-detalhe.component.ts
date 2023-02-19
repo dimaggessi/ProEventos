@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { Lote } from '@app/models/Lote';
 import { Evento } from '@app/models/Evento';
 import { LoteService } from '@app/services/lote.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -25,6 +26,8 @@ export class EventoDetalheComponent implements OnInit {
   form!: FormGroup;
   estadoSalvarAtualizar: string = 'post';
   loteAtual = {id: 0, nome: '', indice: 0};
+  imagemURL = 'assets/upload.jpg'
+  file: File;
 
   get modoEditar(): boolean {
     return this.estadoSalvarAtualizar === 'put';
@@ -75,6 +78,10 @@ export class EventoDetalheComponent implements OnInit {
         (evento: Evento) => {
           this.evento = { ...evento }
           this.form.patchValue(this.evento);
+          if (this.evento.imagemURL !== '')
+          {
+            this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+          }
           this.carregarLotes();
         },
         (error: any) => {
@@ -96,7 +103,7 @@ export class EventoDetalheComponent implements OnInit {
       local: ['', Validators.required],
       dataEvento: ['', Validators.required],
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       lotes: this.fb.array([])
@@ -135,6 +142,15 @@ export class EventoDetalheComponent implements OnInit {
   openModal(event: any, template: TemplateRef<any>) {
     event.stopPropagation();
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+  openModalLote(event: any, template: TemplateRef<any>, indice: number) {
+    event.stopPropagation();
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+
+    this.loteAtual.id = this.lotes.get(indice + '.id').value;
+    this.loteAtual.nome = this.lotes.get(indice + '.nome').value;
+    this.loteAtual.indice = indice;
   }
 
   confirm(): void {
@@ -195,28 +211,36 @@ export class EventoDetalheComponent implements OnInit {
   }
 
 
-  public removerLote(template: TemplateRef<any>,
-                     indice: number): void {
+  public removerLote(indice: number): void {
 
-    this.loteAtual.id = this.lotes.get(indice + '.id').value;
-    this.loteAtual.nome = this.lotes.get(indice + '.nome').value;
-    this.loteAtual.indice = indice;
-
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
     this.lotes.removeAt(indice);
+    this.modalRef.hide();
   }
 
-  public confirmDeleteLote(): void {
+  public confirmDeleteLote(indice: number): void {
     this.modalRef.hide();
-
-    this.loteService.deleteLote(this.eventoId, this.loteAtual.id)
-      .subscribe(
-        () => { this.lotes.removeAt(this.loteAtual.indice); },
-        (error: any) => { console.log(`Erro ao tentar excluir o lote: ${this.loteAtual.indice}`)}
-      );
   }
 
   declineDeleteLote(): void {
     this.modalRef.hide();
+  }
+
+  onFileChange(ev: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = ev.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.uploadImage();
+  }
+
+  uploadImage(): void {
+    this.eventoService.postUpload(this.eventoId, this.file)
+      .subscribe(
+        () => this.carregarEvento(),
+        (error: any) => {console.log("erro ao salvar imagem")}
+      );
   }
 }
