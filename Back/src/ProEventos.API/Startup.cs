@@ -10,11 +10,13 @@ using ProEventos.Application.Contratos;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Contexto;
 using ProEventos.Persistence.Contratos;
-using AutoMapper;
 using System;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
+using ProEventos.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProEventos.API
 {
@@ -30,13 +32,40 @@ namespace ProEventos.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProEventosContext>(
+            services.AddDbContext<ProEventosContext>
+            (
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
+            services.AddIdentityCore<User>
+            (
+                options =>
+                    {
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequiredLength = 4;
+
+                    }
+            )
+            .AddRoles<Role>()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddRoleValidator<RoleValidator<Role>>()
+            .AddEntityFrameworkStores<ProEventosContext>()
+            .AddDefaultTokenProviders();
+
+
             services.AddControllers()
-                    .AddNewtonsoftJson(
-                        x => x.SerializerSettings.ReferenceLoopHandling =
+                    .AddJsonOptions
+                    (
+                        options => options.JsonSerializerOptions.Converters
+                            .Add(new JsonStringEnumConverter())
+                    )
+                    .AddNewtonsoftJson
+                    (
+                        options => options.SerializerSettings.ReferenceLoopHandling =
                             Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
 
@@ -44,17 +73,24 @@ namespace ProEventos.API
 
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<ILoteService, LoteService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IGeralPersist, GeralPersist>();
             services.AddScoped<IEventoPersist, EventoPersist>();
             services.AddScoped<ILotePersist, LotePersist>();
+            services.AddScoped<IUserPersist, UserPersist>();
+
 
             services.AddCors();
             
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
-            });
+            services.AddSwaggerGen
+            (   
+                c =>
+                    {
+                        c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
+                    }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,9 +109,12 @@ namespace ProEventos.API
 
             app.UseAuthorization();
 
-            app.UseCors(cors => cors.AllowAnyHeader()
-                                    .AllowAnyMethod()
-                                    .AllowAnyOrigin());
+            app.UseCors
+            (
+                cors => cors.AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowAnyOrigin()
+            );
 
             app.UseStaticFiles(new StaticFileOptions() 
             {
@@ -86,10 +125,13 @@ namespace ProEventos.API
                 RequestPath = new PathString("/Resources")
             });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints
+            (
+                endpoints =>
+                    {
+                        endpoints.MapControllers();
+                    }
+            );
         }
     }
 }
