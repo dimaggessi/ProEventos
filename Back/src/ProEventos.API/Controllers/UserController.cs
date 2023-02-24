@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.API.Extensions;
 using ProEventos.Application.Contratos;
 using ProEventos.Application.Dtos;
 
@@ -11,7 +12,7 @@ namespace ProEventos.API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -28,14 +29,14 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+                var userName = User.GetUserName();
                 var user = await _userService.GetUserByUserNameAsync(userName);
                 return Ok(user);
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar remover usuário. Erro: {ex.Message}");
+                $"Erro ao tentar recuperar usuário. Erro: {ex.Message}");
             }
 
         }
@@ -51,14 +52,14 @@ namespace ProEventos.API.Controllers
 
                 var user = await _userService.CreateAccountAsync(userDto);
                 if (user != null)
-                    return Ok($"Usuário {user} cadastrado com sucesso");
+                    return Ok(user);
                 
                 return BadRequest("Usuário não criado, tente novamente mais tarde!");
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar remover usuário. Erro: {ex.Message}");
+                $"Erro ao tentar registrar usuário. Erro: {ex.Message}");
             }
         }
 
@@ -88,9 +89,28 @@ namespace ProEventos.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar remover usuário. Erro: {ex.Message}");
+                $"Erro ao tentar realizar login. Erro: {ex.Message}");
             }
+        }
 
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> Register(UserUpdateDto userUpdateDto)
+        {
+            try
+            {
+                var user = await _userService.GetUserByUserNameAsync(User.GetUserName());
+                if (user == null) return Unauthorized("Usuário inválido.");
+
+                var userReturn = await _userService.UpdateAccount(userUpdateDto);
+                if (userReturn == null) return NoContent();
+
+                return Ok(userReturn);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                $"Erro ao tentar atualizar usuário. Erro: {ex.Message}");
+            }
         }
     }
 }
