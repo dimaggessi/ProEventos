@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
 using ProEventos.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ProEventos.API
 {
@@ -46,7 +49,6 @@ namespace ProEventos.API
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
                         options.Password.RequiredLength = 4;
-
                     }
             )
             .AddRoles<Role>()
@@ -56,6 +58,20 @@ namespace ProEventos.API
             .AddEntityFrameworkStores<ProEventosContext>()
             .AddDefaultTokenProviders();
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer
+                    (
+                        options => 
+                        {
+                            options.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidateIssuerSigningKey = true,
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                                ValidateIssuer = false,
+                                ValidateAudience = false
+                            };
+                        }
+                    );
 
             services.AddControllers()
                     .AddJsonOptions
@@ -87,9 +103,9 @@ namespace ProEventos.API
             services.AddSwaggerGen
             (   
                 c =>
-                    {
-                        c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
-                    }
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
+                }
             );
         }
 
@@ -107,7 +123,9 @@ namespace ProEventos.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseCors
             (
@@ -128,9 +146,9 @@ namespace ProEventos.API
             app.UseEndpoints
             (
                 endpoints =>
-                    {
-                        endpoints.MapControllers();
-                    }
+                {
+                    endpoints.MapControllers();
+                }
             );
         }
     }
