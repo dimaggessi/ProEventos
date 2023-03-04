@@ -8,6 +8,6 @@ namespace ProEventos.Application.Contratos
 {
     public interface ITokenService
     {
-        Task<string> CreteToken(UserUpdateDto userUpdateDto);
+        Task<string> CreateToken(UserUpdateDto userUpdateDto);
     }
 }

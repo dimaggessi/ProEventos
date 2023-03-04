@@ -9,7 +9,7 @@
 
 	<div class="col-md-6">
 
-		<form [formGroup]="form" class="p-1">
+		<form [formGroup]="form" class="p-1" (ngSubmit)="register()">
       <div class="pb-2 d-block d-md-none">
         <h3 class="border-bottom">Cadastro de Usuário</h3>
       </div>
@@ -62,14 +62,14 @@
         <div class="form-group col-sm-6">
           <label for="">Senha:</label>
           <input class="form-control" type="password"
-          formControlName="senha"
-          [ngClass]="{'is-invalid': f.senha.errors && f.senha.touched}"
+          formControlName="password"
+          [ngClass]="{'is-invalid': f.password.errors && f.password.touched}"
           placeholder="Digite uma senha" />
-          <div *ngIf="f.senha.errors?.required"
+          <div *ngIf="f.password.errors?.required"
           class="invalid-feedback">
             senha é obrigatório
           </div>
-          <div *ngIf="f.senha.errors?.minlength"
+          <div *ngIf="f.password.errors?.minlength"
           class="invalid-feedback">
             a senha deve conter no mínimo 6 caracteres
           </div>
@@ -77,14 +77,14 @@
         <div class="form-group col-sm-6">
           <label for="">Confirmar Senha:</label>
           <input class="form-control" type="password"
-          formControlName="confirmaSenha"
-          [ngClass]="{'is-invalid': f.confirmaSenha.errors && f.confirmaSenha.touched}"
+          formControlName="confirmaPassword"
+          [ngClass]="{'is-invalid': f.confirmaPassword.errors && f.confirmaPassword.touched}"
           placeholder="Confirme a senha" />
-          <div *ngIf="f.confirmaSenha.errors?.required"
+          <div *ngIf="f.confirmaPassword.errors?.required"
           class="invalid-feedback">
             é preciso confirmar a senha.
           </div>
-          <div *ngIf="f.confirmaSenha.errors?.mustMatch"
+          <div *ngIf="f.confirmaPassword.errors?.mustMatch"
           class="invalid-feedback">
             as senhas devem coincidir
           </div>
@@ -98,7 +98,7 @@
       </div>
       <div class="form-row">
         <div class="form-group col-12">
-          <button class="btn btn-lg btn-success btn-block px-5">
+          <button [disabled]="!form.valid" class="btn btn-lg btn-success btn-block px-5" type="submit">
             Registar
           </button>
         </div>

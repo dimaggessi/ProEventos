@@ -32,7 +32,7 @@ namespace ProEventos.Application
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
-        public async Task<string> CreteToken(UserUpdateDto userUpdateDto)
+        public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
         {
             var user = _mapper.Map<User>(userUpdateDto);
 
