@@ -170,7 +170,6 @@ export class EventoDetalheComponent implements OnInit {
 
       this.eventoService[this.estadoSalvarAtualizar](this.evento).subscribe(
         (eventoRetorno: Evento) => {
-          this.confirm();
           this.router.navigate([`eventos/detalhe/${eventoRetorno.id}`]);
         },
         (error: any) => {

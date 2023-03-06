@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -16,6 +16,9 @@ import { NgxCurrencyModule } from 'ngx-currency';
 
 import { EventoService } from './services/evento.service';
 import { LoteService } from './services/lote.service';
+import { UserService } from './services/user.service';
+
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -69,7 +72,9 @@ defineLocale('pt-br', ptBrLocale);
   ],
   providers: [
     EventoService,
-    LoteService
+    LoteService,
+    UserService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
