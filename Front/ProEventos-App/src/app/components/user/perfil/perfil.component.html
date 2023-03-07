@@ -1,7 +1,7 @@
 <app-titulo [titulo] = "'Perfil'"></app-titulo>
 
 <div class="card rounded shadow-sm">
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3 bg-primary">
@@ -14,22 +14,21 @@
             </a>
           </div>
           <div class="card-body">
-            <div class="h4 text-center mb-3">@UserName</div>
-            <div class="h7 text-bold pb-1"><b>Nome:</b> Miracles Lee Cross</div>
+            <div class="h4 text-center mb-3">@{{f.userName.value}}</div>
+            <div class="h7 text-bold pb-1"><b>Nome:</b> {{f.primeiroNome.value + ' ' + f.ultimoNome.value}}</div>
             <div class="h7">
-              Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-              etc.
+              {{f.descricao.value}}
             </div>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <div class="row">
                 <div class="col-6 text-center border-right">
-                  <div class="h5">1342</div>
-                  <div class="h6 text-muted">Eventos Ministrados</div>
+                  <div class="h5">0</div>
+                  <div class="h6 text-muted">Eventos Criados</div>
                 </div>
                 <div class="col-6 text-center">
-                  <div class="h5">1342</div>
+                  <div class="h5">0</div>
                   <div class="h6 text-muted">Eventos Participados</div>
                 </div>
               </div>
@@ -43,23 +42,31 @@
           <div class="form-group col-12">
             <h3 class="border-bottom">Detalhe Perfil</h3>
           </div>
-          <div class="form-group col">
+          <div class="form-group col-sm-6">
             <label>Título</label>
-            <select class="form-control">
-              <option value=""></option>
-              <option value="0">Não Quero</option>
-              <option value="Senhorita">Tecnólogo(a)</option>
-              <option value="Senhorita">Bacharel</option>
-              <option value="Senhorita">Especialista</option>
-              <option value="Senhorita">Pós Graduado(a)</option>
-              <option value="Senhorita">Mestre</option>
-              <option value="Senhorita">Doutor(a)</option>
-              <option value="Senhorita">Pós Doc</option>
+            <select class="form-control form-control-sm" formControlName="titulo">
+              <option value="NaoInformado">Não Informado</option>
+              <option value="Tecnologo">Tecnólogo(a)</option>
+              <option value="Bacharel">Bacharel</option>
+              <option value="Especialista">Especialista</option>
+              <option value="PosGraduado">Pós Graduado(a)</option>
+              <option value="Mestrado">Mestre</option>
+              <option value="Doutorado">Doutor(a)</option>
+              <option value="PosDoutorado">Pós Doc</option>
             </select>
           </div>
-          <div class="form-group col-sm-5">
+          <div class="form-group col-sm-6">
+            <label>Função</label>
+            <select class="form-control form-control-sm" formControlName="funcao">
+              <option value=""></option>
+              <option value="NaoInformado">Não informado</option>
+              <option value="Participante">Participante</option>
+              <option value="Palestrante">Palestrante</option>
+            </select>
+          </div>
+          <div class="form-group col-sm-6 mt-1">
             <label>Primeiro Nome</label>
-            <input type="text" class="form-control"
+            <input type="text" class="form-control form-control-sm"
             formControlName="primeiroNome"
             [ngClass]="{'is-invalid': f.primeiroNome.errors && f.primeiroNome.touched}"
             placeholder="Insira o primeiro nome"/>
@@ -67,9 +74,9 @@
               primeiro nome é obrigatório
             </div>
           </div>
-          <div class="form-group col-sm-5">
+          <div class="form-group col-sm-6 mt-1">
             <label>Último Nome</label>
-            <input type="text" class="form-control"
+            <input type="text" class="form-control form-control-sm"
             formControlName="ultimoNome"
             [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}"
             placeholder="Insira o último nome"/>
@@ -79,9 +86,9 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-sm-5">
+          <div class="form-group col-sm-6">
             <label>E-mail</label>
-            <input type="text" class="form-control"
+            <input type="text" class="form-control form-control-sm"
             formControlName="email"
             [ngClass]="{'is-invalid': f.email.errors && f.email.touched}"
             placeholder="Insira seu e-mail"/>
@@ -92,25 +99,17 @@
               informe um e-mail válido: email@dominio
             </div>
           </div>
-          <div class="form-group col-sm-4">
+          <div class="form-group col-sm-6">
             <label>Telefone</label>
-            <input type="number" class="form-control"
-            formControlName="telefone"
-            [ngClass]="{'is-invalid': f.telefone.errors && f.telefone.touched}"
+            <input type="phone" class="form-control form-control-sm"
+            formControlName="phoneNumber"
+            [ngClass]="{'is-invalid': f.phoneNumber.errors && f.phoneNumber.touched}"
             placeholder="Insira seu telefone"/>
             <div class="invalid-feedback">
               telefone é obrigatório
             </div>
           </div>
-          <div class="form-group col-sm">
-            <label>Função</label>
-            <select class="form-control">
-              <option value=""></option>
-              <option value="Participante">Participante</option>
-              <option value="Palestrante">Palestrante</option>
-            </select>
-          </div>
-          <div class="col-12">
+          <div class="form-group col-12">
             <label>Descrição</label>
             <input type="text" class="form-control"
             formControlName="descricao"
@@ -129,14 +128,14 @@
           <div class="form-group col-sm">
             <label>Senha</label>
             <input type="password" class="form-control"
-            formControlName="senha"
-            [ngClass]="{'is-invalid': f.senha.errors && f.senha.touched}"
+            formControlName="password"
+            [ngClass]="{'is-invalid': f.password.errors && f.password.touched}"
             placeholder="Insira uma senha"/>
-            <div *ngIf="f.senha.errors?.required"
+            <div *ngIf="f.password.errors?.required"
             class="invalid-feedback">
               senha é obrigatório
             </div>
-            <div *ngIf="f.senha.errors?.minlength"
+            <div *ngIf="f.password.errors?.minlength"
             class="invalid-feedback">
               a senha deve conter no mínimo 6 caracteres
             </div>
@@ -144,14 +143,14 @@
           <div class="form-group col-sm">
             <label>Confirmar Senha</label>
             <input type="password" class="form-control"
-            formControlName="confirmaSenha"
-            [ngClass]="{'is-invalid': f.confirmaSenha.errors && f.confirmaSenha.touched}"
+            formControlName="confirmPassword"
+            [ngClass]="{'is-invalid': f.confirmPassword.errors && f.confirmPassword.touched}"
             placeholder="Confirme a senha"/>
-            <div *ngIf="f.confirmaSenha.errors?.required"
+            <div *ngIf="f.confirmPassword.errors?.required"
             class="invalid-feedback">
               é preciso confirmar a senha.
             </div>
-            <div *ngIf="f.confirmaSenha.errors?.mustMatch"
+            <div *ngIf="f.confirmPassword.errors?.mustMatch"
             class="invalid-feedback">
               as senhas devem coincidir
             </div>
@@ -164,7 +163,7 @@
         <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
           Cancelar Alteração
         </button>
-        <button class="btn btn-success">
+        <button class="btn btn-success" type="submit">
           Salvar Alterações
         </button>
       </div>
