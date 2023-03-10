@@ -10,8 +10,8 @@
         <input
         type="text"
         class="form-control ml-1 sm-mt-1"
-        placeholder="buscar"
-        [(ngModel)]="filtroLista"
+        placeholder="Filtrar por Tema e Local"
+        (input)="filtrarEventos($event.target)"
         >
       </div>
     </div>
@@ -45,7 +45,7 @@
       </tr>
     </thead>
     <tbody *ngIf="eventos && eventos.length">
-      <tr *ngFor="let evento of eventosFiltrados" (click)="detalheEvento(evento.id)" style="cursor: pointer">
+      <tr *ngFor="let evento of eventos" (click)="detalheEvento(evento.id)" style="cursor: pointer">
         <td class="d-none d-md-table-cell">
           <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
             <img [src]="mostraImagem(evento.imagemURL)" alt=""
@@ -62,30 +62,43 @@
         <td class="d-none d-md-table-cell">{{evento.lotes[0]?.nome | uppercase}}</td>
         <td>
           <div class="btn-group" style="display: flex">
-              <button type="button" class="btn btn-danger btn-md" tooltip="Excluir" (click)="openModal($event, template, evento.id)">
-                <i class="fa fa-trash"></i></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot *ngIf="!eventos.length">
-          <tr>
-            <td colspan="8">
-              <h4>Nenhum evento encontrado</h4>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+            <button type="button" class="btn btn-danger btn-md" tooltip="Excluir" (click)="openModal($event, template, evento.id)">
+              <i class="fa fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="!eventos.length">
+        <tr>
+          <td colspan="8">
+            <h4>Nenhum evento encontrado</h4>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="d-flex justify-content-center">
+      <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      [align]="true"
+      pageBtnClass="btn"
+      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
   </div>
+</div>
+</div>
 
 
-  {{eventos | json}}
+{{eventos | json}}
 
-  <ng-template #template>
-    <div class="modal-body text-center">
-      <p>Você tem certeza que deseja excluir o Evento de código {{this.eventoId}}?</p>
-      <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
-      <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
-    </div>
-  </ng-template>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Você tem certeza que deseja excluir o Evento de código {{this.eventoId}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

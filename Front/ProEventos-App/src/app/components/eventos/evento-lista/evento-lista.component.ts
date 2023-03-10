@@ -4,6 +4,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
 import { environment } from '@environments/environment';
+import { PaginatedResult, Pagination } from '@app/models/Pagination';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -14,13 +17,15 @@ export class EventoListaComponent implements OnInit {
 
   modalRef?: BsModalRef;
   public eventos: Evento[] = [];
-  public eventosFiltrados: Evento[] = [];
+  public eventoId: number = 0;
+  public pagination = {} as Pagination;
+
+  termoBuscaChanged: Subject<string> = new Subject<string>();
+
   public widthImg: number = 150;
   public marginImg: number = 2;
-  public eventoId: number = 0;
 
   public isCollapsed: boolean = false;
-  private _filtroLista: string = "";
 
   constructor(
     private eventoService: EventoService,
@@ -29,34 +34,41 @@ export class EventoListaComponent implements OnInit {
     ) { }
 
   public ngOnInit() : void {
+    this.pagination = { currentPage: 1, itemsPerPage: 3, totalItems: 1 } as Pagination;
     this.getEventos();
   }
 
   public getEventos(): void {
-    this.eventoService.getEventos().subscribe(
-      (_eventos : Evento[]) => {
-        this.eventos = _eventos,
-        this.eventosFiltrados = this.eventos;
+    this.eventoService.getEventos(this.pagination.currentPage,
+                                  this.pagination.itemsPerPage).subscribe(
+      (paginatedResult : PaginatedResult<Evento[]>) => {
+        this.eventos = paginatedResult.result;
+        this.pagination = paginatedResult.pagination;
       },
       error => console.log(error)
     );
   }
 
-  public get filtroLista() : string {
-    return this._filtroLista;
-  }
+  public filtrarEventos(evt: any): void {
+    if (this.termoBuscaChanged.observers.length == 0) {
 
-  public set filtroLista(value : string) {
-    this._filtroLista = value;
-    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
-  }
-
-  public filtrarEventos(filtrarPor : string) : Evento[] {
-    filtrarPor = filtrarPor.toLocaleLowerCase();
-    return this.eventos.filter(
-      (evento: { tema : string; local: string; }) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
-      evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
-    )
+      this.termoBuscaChanged.pipe(debounceTime(500)).subscribe(
+        filtrarPor => {
+          this.eventoService.getEventos(
+          this.pagination.currentPage,
+          this.pagination.itemsPerPage,
+          filtrarPor
+          ).subscribe(
+            (paginatedResult : PaginatedResult<Evento[]>) => {
+              this.eventos = paginatedResult.result;
+              this.pagination = paginatedResult.pagination;
+            },
+            error => console.log(error)
+          );
+        }
+      )
+    }
+    this.termoBuscaChanged.next(evt.value);
   }
 
   public change() : void {
@@ -73,6 +85,11 @@ export class EventoListaComponent implements OnInit {
     event.stopPropagation();
     this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  public pageChanged(event): void {
+    this.pagination.currentPage = event.page;
+    this.getEventos();
   }
 
   confirm(): void {
