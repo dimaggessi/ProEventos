@@ -36,7 +36,7 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPut("{eventoId}")]
-        public async Task<IActionResult> Put(int eventoId, LoteDto[] models)
+        public async Task<IActionResult> SaveLotes(int eventoId, LoteDto[] models)
         {
             try
             {
