@@ -4,13 +4,16 @@
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3 bg-primary">
-          <div class="card-header"></div>
+          <div class="card-header">
+            <input type="file" #file (change)="onFileChange($event)" style="display: none;">
+          </div>
           <div class="d-flex align-self-center pt-3">
-            <a>
               <img
-              src="https://avatars.githubusercontent.com/u/73005938?s=400&u=4acb1b90fbf330ada1f432be8bf12e787d922454&v=4"
-              name="aboutme" width="120" height="120" class="rounded-circle">
-            </a>
+              [src]="imagemURL"
+              (click)="file.click()"
+              class="rounded-circle"
+              style="cursor: pointer;"
+              name="aboutme" width="120" height="120" >
           </div>
           <div class="card-body">
             <div class="h4 text-center mb-3">@{{user.userName}}</div>

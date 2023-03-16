@@ -18,8 +18,7 @@ namespace ProEventos.API.Helpers
         public async Task<string> SaveImage(IFormFile imageFile, string destination)
         {
             string imageName = new String
-                                (
-                                    Path.GetFileNameWithoutExtension(imageFile.FileName)
+                                (Path.GetFileNameWithoutExtension(imageFile.FileName)
                                     .Take(10)
                                     .ToArray()
                                 ).Replace(' ', '-');
@@ -42,18 +41,16 @@ namespace ProEventos.API.Helpers
         //não tem retorno externo (não é acessado fora da API)
         public void DeleteImage(string imageName, string destination)
         {
-            var imagePath = Path.Combine
-                            (
-                                _hostEnvironment.ContentRootPath, //caminho raiz atual
-                                @$"Resources/{destination}", //concatena com o diretório (não é case sensitive)
-                                imageName
-                            );
-
-            //Caso o imagePath exista:
-            if (System.IO.File.Exists(imagePath))
+            if (!string.IsNullOrEmpty(imageName))
             {
-                //DeletaImagem
-                System.IO.File.Delete(imagePath);
+                var imagePath = Path.Combine(
+                                    _hostEnvironment.ContentRootPath, //caminho raiz atual
+                                    @$"Resources/{destination}", //concatena com o diretório (não é case sensitive)
+                                    imageName);
+
+                //Caso o imagePath exista:
+                if (System.IO.File.Exists(imagePath))
+                    System.IO.File.Delete(imagePath); //DeletaImage
             }
         }
     }
