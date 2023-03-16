@@ -1,7 +1,6 @@
 <app-titulo [titulo] = "'Perfil'"></app-titulo>
 
 <div class="card rounded shadow-sm">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3 bg-primary">
@@ -14,10 +13,10 @@
             </a>
           </div>
           <div class="card-body">
-            <div class="h4 text-center mb-3">@{{f.userName.value}}</div>
-            <div class="h7 text-bold pb-1"><b>Nome:</b> {{f.primeiroNome.value + ' ' + f.ultimoNome.value}}</div>
+            <div class="h4 text-center mb-3">@{{user.userName}}</div>
+            <div class="h7 text-bold pb-1"><b>Nome:</b> {{user.primeiroNome + ' ' + user.ultimoNome}}</div>
             <div class="h7">
-              {{f.descricao.value}}
+              {{user.descricao}}
             </div>
           </div>
           <ul class="list-group list-group-flush">
@@ -38,136 +37,27 @@
         </div>
       </div>
       <div class="col-lg-9">
-        <div class="form-row">
-          <div class="form-group col-12">
-            <h3 class="border-bottom">Detalhe Perfil</h3>
-          </div>
-          <div class="form-group col-sm-6">
-            <label>Título</label>
-            <select class="form-control form-control-sm" formControlName="titulo">
-              <option value="NaoInformado">Não Informado</option>
-              <option value="Tecnologo">Tecnólogo(a)</option>
-              <option value="Bacharel">Bacharel</option>
-              <option value="Especialista">Especialista</option>
-              <option value="PosGraduado">Pós Graduado(a)</option>
-              <option value="Mestrado">Mestre</option>
-              <option value="Doutorado">Doutor(a)</option>
-              <option value="PosDoutorado">Pós Doc</option>
-            </select>
-          </div>
-          <div class="form-group col-sm-6">
-            <label>Função</label>
-            <select class="form-control form-control-sm" formControlName="funcao">
-              <option value=""></option>
-              <option value="NaoInformado">Não informado</option>
-              <option value="Participante">Participante</option>
-              <option value="Palestrante">Palestrante</option>
-            </select>
-          </div>
-          <div class="form-group col-sm-6 mt-1">
-            <label>Primeiro Nome</label>
-            <input type="text" class="form-control form-control-sm"
-            formControlName="primeiroNome"
-            [ngClass]="{'is-invalid': f.primeiroNome.errors && f.primeiroNome.touched}"
-            placeholder="Insira o primeiro nome"/>
-            <div class="invalid-feedback">
-              primeiro nome é obrigatório
-            </div>
-          </div>
-          <div class="form-group col-sm-6 mt-1">
-            <label>Último Nome</label>
-            <input type="text" class="form-control form-control-sm"
-            formControlName="ultimoNome"
-            [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}"
-            placeholder="Insira o último nome"/>
-            <div class="invalid-feedback">
-              último nome é obrigatório
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-sm-6">
-            <label>E-mail</label>
-            <input type="text" class="form-control form-control-sm"
-            formControlName="email"
-            [ngClass]="{'is-invalid': f.email.errors && f.email.touched}"
-            placeholder="Insira seu e-mail"/>
-            <div *ngIf="f.email.errors?.required" class="invalid-feedback">
-              e-mail é obrigatório
-            </div>
-            <div *ngIf="f.email.errors?.email" class="invalid-feedback">
-              informe um e-mail válido: email@dominio
-            </div>
-          </div>
-          <div class="form-group col-sm-6">
-            <label>Telefone</label>
-            <input type="phone" class="form-control form-control-sm"
-            formControlName="phoneNumber"
-            [ngClass]="{'is-invalid': f.phoneNumber.errors && f.phoneNumber.touched}"
-            placeholder="Insira seu telefone"/>
-            <div class="invalid-feedback">
-              telefone é obrigatório
-            </div>
-          </div>
-          <div class="form-group col-12">
-            <label>Descrição</label>
-            <input type="text" class="form-control"
-            formControlName="descricao"
-            [ngClass]="{'is-invalid': f.descricao.errors && f.descricao.touched}"
-            placeholder="Insira uma breve descrição"/>
-            <div class="invalid-feedback">
-              a descrição é obrigatória
-            </div>
-          </div>
-        </div>
-        <div>
-          <h3 class="pt-3 border-bottom">Mudar Senha</h3>
-          <p>Caso mude de senha, preencha os campos abaixo:</p>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-sm">
-            <label>Senha</label>
-            <input type="password" class="form-control"
-            formControlName="password"
-            [ngClass]="{'is-invalid': f.password.errors && f.password.touched}"
-            placeholder="Insira uma senha"/>
-            <div *ngIf="f.password.errors?.required"
-            class="invalid-feedback">
-              senha é obrigatório
-            </div>
-            <div *ngIf="f.password.errors?.minlength"
-            class="invalid-feedback">
-              a senha deve conter no mínimo 6 caracteres
-            </div>
-          </div>
-          <div class="form-group col-sm">
-            <label>Confirmar Senha</label>
-            <input type="password" class="form-control"
-            formControlName="confirmPassword"
-            [ngClass]="{'is-invalid': f.confirmPassword.errors && f.confirmPassword.touched}"
-            placeholder="Confirme a senha"/>
-            <div *ngIf="f.confirmPassword.errors?.required"
-            class="invalid-feedback">
-              é preciso confirmar a senha.
-            </div>
-            <div *ngIf="f.confirmPassword.errors?.mustMatch"
-            class="invalid-feedback">
-              as senhas devem coincidir
-            </div>
-          </div>
-        </div>
+        <tabset>
+          <tab class="border p-3">
+            <ng-template tabHeading="">
+              <i class="fa fa-address-card mr-2"></i><span>Perfil</span>
+            </ng-template>
+            <app-perfil-detalhe (changeFormValue)="setFormValue($event)"></app-perfil-detalhe>
+          </tab>
+          <tab *ngIf="isSpeaker" class="border p-3">
+          <ng-template tabHeading="">
+            <i class="fa fa-user mr-2"></i><span>Palestrante</span>
+          </ng-template>
+            // Componente Palestrante//
+          </tab>
+          <tab *ngIf="isSpeaker" class="border p-3">
+            <ng-template tabHeading="">
+              <i class="fa fa-share-square mr-2"></i><span>Rede Social</span>
+            </ng-template>
+              // Componente Rede Social//
+          </tab>
+        </tabset>
       </div>
     </div>
-    <div class="card-footer">
-      <div class="d-flex">
-        <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
-          Cancelar Alteração
-        </button>
-        <button class="btn btn-success" type="submit">
-          Salvar Alterações
-        </button>
-      </div>
-    </div>
-  </form>
 </div>
 
