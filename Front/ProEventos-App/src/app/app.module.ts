@@ -22,15 +22,16 @@ import { UserService } from './services/user.service';
 
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
+import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EventosComponent } from './components/eventos/eventos.component';
 import { NavComponent } from './shared/nav/nav.component';
-import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
-import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
+import { EventosComponent } from './components/eventos/eventos.component';
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
 import { EventoDetalheComponent } from './components/eventos/evento-detalhe/evento-detalhe.component';
 import { EventoListaComponent } from './components/eventos/evento-lista/evento-lista.component';
@@ -38,7 +39,9 @@ import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { HomeComponent } from './components/home/home.component';
-import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
+import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
+import { PalestranteListaComponent } from './components/palestrantes/palestrante-lista/palestrante-lista.component';
+import { PalestranteDetalheComponent } from './components/palestrantes/palestrante-detalhe/palestrante-detalhe.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -52,6 +55,8 @@ defineLocale('pt-br', ptBrLocale);
     PerfilComponent,
     PerfilDetalheComponent,
     PalestrantesComponent,
+    PalestranteListaComponent,
+    PalestranteDetalheComponent,
     TituloComponent,
     DateTimeFormatPipe,
     EventoDetalheComponent,

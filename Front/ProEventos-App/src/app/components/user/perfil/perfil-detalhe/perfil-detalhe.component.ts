@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ValidatorField } from '@app/helpers/ValidatorField';
 import { User } from '@app/models/Identity/User';
 import { UserUpdate } from '@app/models/Identity/UserUpdate';
+import { PalestranteService } from '@app/services/palestrante.service';
 import { UserService } from '@app/services/user.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class PerfilDetalheComponent implements OnInit {
   constructor(
     public fb: FormBuilder,
     public userService: UserService,
+    public palestranteService: PalestranteService,
     private router: Router
     // private toaster: ToastrService
   ) { }
@@ -81,6 +83,11 @@ export class PerfilDetalheComponent implements OnInit {
 
   public userRefresh() {
     this.userUpdate = {...this.form.value};
+
+    if (this.f.funcao.value == 'Palestrante') {
+      this.palestranteService.post().subscribe();
+    }
+
     this.userService.updateUser(this.userUpdate).subscribe(
       () => /*this.toaster.success('Usuário atualizado!', 'Sucesso')*/ {},
       (error) => {

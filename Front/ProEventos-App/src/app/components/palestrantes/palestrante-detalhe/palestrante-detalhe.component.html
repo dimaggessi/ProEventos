@@ -1,0 +1,13 @@
+<form [formGroup]="form">
+    <div class="form-group">
+        <label class="d-flex">Minicurrículo:</label>
+        <textarea class="form-control" id="exampleTextarea" rows="5"
+        formControlName="miniCurriculo"
+        placeholder="Digite aqui sua descrição."
+        [ngClass]="{'is-invalid': f.miniCurriculo.errors && f.miniCurriculo.toutched}"></textarea>
+        <small class="form-text"
+        [ngClass]="corDaDescricao">
+            {{situacaoDoForm}}
+        </small>
+    </div>
+</form>
