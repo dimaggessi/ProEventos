@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ContatosComponent } from './components/contatos/contatos.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
 
 import { EventosComponent } from './components/eventos/eventos.component';
@@ -41,8 +40,6 @@ const routes: Routes = [
           { path: 'lista' , component: EventoListaComponent }
         ]
       },
-
-      { path: 'dashboard' , component: DashboardComponent},
       { path: 'palestrantes' , component: PalestrantesComponent},
       { path: 'contatos' , component: ContatosComponent},
     ]
@@ -56,7 +53,7 @@ const routes: Routes = [
     ]
   },
   { path: 'home' , component: HomeComponent},
-  { path: '**' , redirectTo: 'dashboard', pathMatch: 'full'}
+  { path: '**' , redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

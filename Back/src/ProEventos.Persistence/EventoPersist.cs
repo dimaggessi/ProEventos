@@ -17,7 +17,23 @@ namespace ProEventos.Persistence
             this._context = context;
             //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        
+
+        public async Task<PageList<Evento>> GetAllAsync(PageParams pageParams)
+        {
+            IQueryable<Evento> query = _context.Eventos
+                .Include(e => e.Lotes)
+                .Include(e => e.RedesSociais)
+                .Include(e => e.PalestrantesEventos)
+                .ThenInclude(pe => pe.Palestrante);
+
+            query = query
+                .Where(e => (e.Tema.ToLower().Contains(pageParams.Term.ToLower()))
+                         || (e.Local.ToLower().Contains(pageParams.Term.ToLower())))
+                .AsNoTracking()
+                .OrderBy(e => e.Id);
+
+            return await PageList<Evento>.CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
+        }
         public async Task<PageList<Evento>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Eventos

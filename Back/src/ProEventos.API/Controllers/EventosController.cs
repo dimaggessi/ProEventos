@@ -53,6 +53,25 @@ namespace ProEventos.API.Controllers
             }
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll([FromQuery]PageParams pageParams)
+        {
+            try
+            {
+                var eventos = await _eventoService.GetAllAsync(pageParams);
+                if (eventos == null) return NoContent();
+
+                Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
+
+                return Ok(eventos);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

@@ -94,6 +94,27 @@ namespace ProEventos.Application
             }
         }
 
+        public async Task<PageList<EventoDto>> GetAllAsync(PageParams pageParams)
+        {
+            try
+            {
+                var eventos = await _eventoPersist.GetAllAsync(pageParams);
+                if (eventos == null) return null;
+
+                var resultado = _mapper.Map<PageList<EventoDto>>(eventos);
+
+                resultado.CurrentPage = eventos.CurrentPage;
+                resultado.TotalPages = eventos.TotalPages;
+                resultado.PageSize = eventos.PageSize;
+                resultado.TotalCount = eventos.TotalCount;
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public async Task<PageList<EventoDto>> GetAllEventosAsync(int userId, PageParams pageParams, 
                                                                   bool includePalestrantes = false)
         {

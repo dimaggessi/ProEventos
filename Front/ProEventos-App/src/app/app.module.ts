@@ -29,7 +29,6 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { EventosComponent } from './components/eventos/eventos.component';
 import { ContatosComponent } from './components/contatos/contatos.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
@@ -42,6 +41,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PalestrantesComponent } from './components/palestrantes/palestrantes.component';
 import { PalestranteListaComponent } from './components/palestrantes/palestrante-lista/palestrante-lista.component';
 import { PalestranteDetalheComponent } from './components/palestrantes/palestrante-detalhe/palestrante-detalhe.component';
+import { RedesSociaisComponent } from './components/redesSociais/redesSociais.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -51,12 +51,12 @@ defineLocale('pt-br', ptBrLocale);
     NavComponent,
     EventosComponent,
     ContatosComponent,
-    DashboardComponent,
     PerfilComponent,
     PerfilDetalheComponent,
     PalestrantesComponent,
     PalestranteListaComponent,
     PalestranteDetalheComponent,
+    RedesSociaisComponent,
     TituloComponent,
     DateTimeFormatPipe,
     EventoDetalheComponent,

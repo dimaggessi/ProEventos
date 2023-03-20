@@ -10,9 +10,6 @@
       <ul class="navbar-nav mr-auto">
         <ng-container *ngIf="(userService.currentUser$ | async) !== null">
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" aria-current="page" routerLink="dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" aria-current="page" routerLink="eventos/lista">Eventos</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
