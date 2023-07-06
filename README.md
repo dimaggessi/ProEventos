@@ -1,29 +1,34 @@
 # ProEventosApp - Udemy Course
-Full-Stack .NET WebAPI Angular EF Core 2022
-Prof. Vinícius de Andrade
+This project is my version of **Prof. Vinícius de Andrade Course on Udemy**.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
+[Full-Stack .NET WebAPI Angular EF Core 2022](https://www.udemy.com/course/angular-dotnetcore-efcore/)
 
-## Development server
+Use **Node v16.16.0**, **Angular CLI 12.2.18** and **.NET Core 5.0** to build this project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### ** Languague and Tools **      
 
-## Code scaffolding
+<img align="left" alt="html5" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-plain.svg" />
+<img align="left" alt="css3" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain.svg" />
+<img align="left" alt="typescript" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-plain.svg" />
+<img align="left" alt="angular" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-plain.svg" />
+<img align="left" alt="dotnet" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" />       
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+</br>
+</br>
 
-## Build
+### Project Images
+</br># Lectures List
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+<img src="https://raw.githubusercontent.com/dimaggessi/ProEventos/1f99dc60ccb0e429a2a842ee8affe71ef325c575/Front/ProEventos-App/src/assets/ProEventos01.jpg" />
 
-## Running unit tests
+</br># Lecture Edit
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<img src="https://raw.githubusercontent.com/dimaggessi/ProEventos/1f99dc60ccb0e429a2a842ee8affe71ef325c575/Front/ProEventos-App/src/assets/ProEventos02.jpg" />
 
-## Running end-to-end tests
+</br># User Profile
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+<img src="https://raw.githubusercontent.com/dimaggessi/ProEventos/1f99dc60ccb0e429a2a842ee8affe71ef325c575/Front/ProEventos-App/src/assets/ProEventos03.jpg" />
 
-## Further help
+</br># Swagger API
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+<img src="https://raw.githubusercontent.com/dimaggessi/ProEventos/1f99dc60ccb0e429a2a842ee8affe71ef325c575/Front/ProEventos-App/src/assets/ProEventosAPI.jpg" />
