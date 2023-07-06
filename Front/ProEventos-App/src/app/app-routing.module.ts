@@ -16,7 +16,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '' , redirectTo: 'home', pathMatch: 'full'},
+  { path: '' , redirectTo: 'eventos', pathMatch: 'full'},
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -53,7 +53,7 @@ const routes: Routes = [
     ]
   },
   { path: 'home' , component: HomeComponent},
-  { path: '**' , redirectTo: 'home', pathMatch: 'full'}
+  { path: '**' , redirectTo: 'eventos', pathMatch: 'full'}
 ];
 
 @NgModule({
